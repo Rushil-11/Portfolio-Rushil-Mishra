@@ -23,9 +23,9 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${aldrich.className} min-h-screen flex flex-col`}>
         <Navbar />
-        <main className="flex-1 flex-col">
+        <main className="flex-1 flex flex-col">
           {children}
-          </main>
+        </main>
         <Footer />
       </body>
     </html>
