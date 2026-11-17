@@ -72,7 +72,6 @@ export default function Articles() {
 
   const centerCardRef = useRef<HTMLDivElement>(null);
 
-  // Measure card width + gap dynamically for responsive screen widths
   useEffect(() => {
     const updateStep = () => {
       if (centerCardRef.current) {
@@ -124,7 +123,6 @@ export default function Articles() {
     setTouchStart(null);
   };
 
-  // 5 slots arranged side-by-side in flex-row: [-2, -1, 0, 1, 2]
   const slots = [-2, -1, 0, 1, 2].map((offset) => {
     const articleIndex =
       (currentIndex + offset + ARTICLES.length * 10) % ARTICLES.length;
@@ -191,7 +189,6 @@ export default function Articles() {
             }}
           >
             {slots.map(({ offset, article }) => {
-              // Target state when sliding
               const isCenter =
                 (slideDirection === "idle" && offset === 0) ||
                 (slideDirection === "next" && offset === 1) ||
@@ -209,19 +206,23 @@ export default function Articles() {
 
               const isVisible = isCenter || isLeft || isRight;
 
-              // Shared card content with identical typography and alignment
+              // Scaled content for center vs side cards
               const cardContent = (
                 <>
                   <h3
-                    className={`text-2xl md:text-3xl font-bold leading-snug line-clamp-2 transition-colors duration-500 ${
-                      isCenter ? "text-black" : "text-white"
+                    className={`font-bold leading-snug line-clamp-2 transition-all duration-500 ${
+                      isCenter
+                        ? "text-2xl md:text-3xl text-black"
+                        : "text-lg md:text-xl text-white"
                     }`}
                   >
                     {article.title}
                   </h3>
                   <p
-                    className={`text-sm md:text-base leading-relaxed mt-3 line-clamp-3 transition-colors duration-500 ${
-                      isCenter ? "text-zinc-600" : "text-zinc-300"
+                    className={`leading-relaxed line-clamp-3 transition-all duration-500 ${
+                      isCenter
+                        ? "text-sm md:text-base mt-3 text-zinc-600"
+                        : "text-xs md:text-sm mt-2 text-zinc-300"
                     }`}
                   >
                     {article.subtitle}
@@ -242,10 +243,10 @@ export default function Articles() {
                       href={article.link}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className={`flex-shrink-0 flex flex-col justify-between w-[85vw] sm:w-[420px] md:w-[492px] h-[269px] rounded-[40px] p-8 border transition-all duration-500 ease-out ${
+                      className={`flex-shrink-0 flex flex-col justify-between w-[85vw] sm:w-[420px] md:w-[492px] h-[269px] rounded-[40px] border transition-all duration-500 ease-out ${
                         isCenter
-                          ? "bg-white text-black border-transparent shadow-[0_12px_45px_rgba(255,255,255,0.18)] opacity-100 z-20 cursor-pointer hover:shadow-[0_16px_50px_rgba(255,255,255,0.28)]"
-                          : "bg-[#1f1f1f] text-white border-white/10 opacity-50 hover:opacity-75 z-10 cursor-pointer"
+                          ? "bg-white text-black border-transparent shadow-[0_12px_45px_rgba(255,255,255,0.18)] scale-100 opacity-100 z-20 cursor-pointer p-8 hover:shadow-[0_16px_50px_rgba(255,255,255,0.28)]"
+                          : "bg-[#1f1f1f] text-white border-white/10 scale-[0.84] opacity-50 hover:opacity-75 z-10 cursor-pointer p-6"
                       }`}
                     >
                       {cardContent}
@@ -262,12 +263,12 @@ export default function Articles() {
                     if (offset === -1) handlePrev();
                     if (offset === 1) handleNext();
                   }}
-                  className={`flex-shrink-0 flex flex-col justify-between w-[85vw] sm:w-[420px] md:w-[492px] h-[269px] rounded-[40px] p-8 border select-none overflow-hidden transition-all duration-500 ease-out ${
+                  className={`flex-shrink-0 flex flex-col justify-between w-[85vw] sm:w-[420px] md:w-[492px] h-[269px] rounded-[40px] border select-none overflow-hidden transition-all duration-500 ease-out ${
                     !isVisible
-                      ? "opacity-0 pointer-events-none border-transparent"
+                      ? "opacity-0 scale-75 pointer-events-none border-transparent p-6"
                       : isCenter
-                      ? "bg-white text-black border-transparent shadow-[0_12px_45px_rgba(255,255,255,0.18)] opacity-100 z-20 cursor-pointer"
-                      : "bg-[#1f1f1f] text-white border-white/10 opacity-50 hover:opacity-75 z-10 cursor-pointer"
+                      ? "bg-white text-black border-transparent shadow-[0_12px_45px_rgba(255,255,255,0.18)] scale-100 opacity-100 z-20 cursor-pointer p-8"
+                      : "bg-[#1f1f1f] text-white border-white/10 scale-[0.84] opacity-50 hover:opacity-75 z-10 cursor-pointer p-6"
                   }`}
                 >
                   {cardContent}
