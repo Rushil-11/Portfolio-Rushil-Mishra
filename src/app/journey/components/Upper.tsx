@@ -1,27 +1,43 @@
-import ScrollReveal from "@/components/ScrollReveal";
+"use client";
 
-export default function Upper() {
-  const cards = [
+import ScrollReveal from "@/components/ScrollReveal";
+import { MilestoneItem } from "./MilestoneModal";
+
+interface UpperProps {
+  onSelectMilestone?: (item: MilestoneItem) => void;
+}
+
+export default function Upper({ onSelectMilestone }: UpperProps) {
+  const cards: (MilestoneItem & { side: "left" | "right" })[] = [
     {
       id: "01",
       title: "IEEE Technical Debate",
       side: "left",
       text: "This was the first event I formally participated in. Proving the point of AI replacing the modern-day teachers, secured second position in the competition.",
+      detailedText:
+        "Proving the point of AI replacing the modern-day teachers in our first formal debate competition, securing second position among diverse university participants.",
       hasCredential: false,
+      image: null,
     },
     {
       id: "02",
       title: "TEDx Debate and Group Discussion",
       side: "right",
       text: "This was the second opportunity where I got to discuss and oppose the utility of democracy and later in debate, presented the point of privacy.",
+      detailedText:
+        "Engaged in in-depth discourse opposing the utility of unconstrained democratic frameworks, followed by a formal debate presenting privacy preservation in the digital era.",
       hasCredential: true,
+      image: null,
     },
     {
       id: "03",
       title: "Technex — IIT BHU (March 2026)",
       side: "left",
       text: "Participated in this national-level hackathon sprint. Focused on rapid solution engineering, team execution, and shipping functional software within a tight competitive window.",
+      detailedText:
+        "National-level hackathon sprint at IIT BHU. Focused on rapid solution engineering, end-to-end architecture, and shipping robust software within a high-intensity deadline.",
       hasCredential: true,
+      image: null,
     },
   ];
 
@@ -55,7 +71,6 @@ export default function Upper() {
                       : "right-[calc(50%-48px)] w-[48px]"
                   }`}
                 >
-                  {/* Circuit Node Dot on Spine */}
                   <span
                     className={`absolute top-1/2 -translate-y-1/2 w-3 h-3 bg-black border-2 border-white ${
                       isLeft ? "right-[-6px]" : "left-[-6px]"
@@ -74,10 +89,13 @@ export default function Upper() {
                 {/* Card Container wrapped in ScrollReveal */}
                 <div className="w-full pl-12 md:pl-0 md:w-[calc(50%-48px)]">
                   <ScrollReveal>
-                    <div className="relative bg-white border-2 border-black rounded-[28px] md:rounded-[36px] shadow-[6px_6px_0px_#000] p-6 md:p-8 transition-transform hover:-translate-y-1 duration-200">
+                    <div
+                      onClick={() => onSelectMilestone?.(card)}
+                      className="relative bg-white border-2 border-black rounded-[28px] md:rounded-[36px] shadow-[6px_6px_0px_#000] p-6 md:p-8 transition-all duration-200 hover:-translate-y-1.5 hover:shadow-[8px_8px_0px_#000] cursor-pointer group"
+                    >
                       {/* Card Header / Identifier */}
                       <div className="flex items-center justify-between mb-3">
-                        <h3 className="text-xl md:text-2xl font-bold tracking-tight text-black leading-snug">
+                        <h3 className="text-xl md:text-2xl font-bold tracking-tight text-black leading-snug group-hover:underline">
                           {card.title}
                         </h3>
                       </div>

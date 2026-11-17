@@ -1,22 +1,38 @@
-import ScrollReveal from "@/components/ScrollReveal";
+"use client";
 
-export default function Lower() {
-  const cards = [
+import ScrollReveal from "@/components/ScrollReveal";
+import { MilestoneItem } from "./MilestoneModal";
+
+interface LowerProps {
+  onSelectMilestone?: (item: MilestoneItem) => void;
+}
+
+export default function Lower({ onSelectMilestone }: LowerProps) {
+  const cards: (MilestoneItem & {
+    side: "left" | "right";
+    isIncoming?: boolean;
+  })[] = [
     {
       id: "04",
       title: "Smart India Hackathon (SIH)",
       side: "right",
       text: "Competed in the internal hackathon, architecting scalable solutions and navigating problem breakdowns to tackle large-scale practical constraints.",
+      detailedText:
+        "Internal hackathon competition architecting scalable systems and tackling constraint-heavy real-world problem statements.",
       hasCredential: true,
       isIncoming: false,
+      image: null,
     },
     {
       id: "05",
       title: "CodeChef 2-Star Breakthrough",
       side: "left",
       text: "Conquered my first major competitive programming milestone. A validation of algorithmic discipline, contest composure, and consistent problem-solving progress.",
+      detailedText:
+        "Milestone achievement in competitive programming, demonstrating algorithmic discipline, rating progression to 2-Star, and consistent performance across ranked rounds.",
       hasCredential: false,
       isIncoming: false,
+      image: null,
     },
     {
       id: "06",
@@ -25,6 +41,7 @@ export default function Lower() {
       text: "More exciting milestones are coming...",
       hasCredential: false,
       isIncoming: true,
+      image: null,
     },
   ];
 
@@ -41,6 +58,7 @@ export default function Lower() {
         <div className="flex flex-col gap-16 md:gap-24">
           {cards.map((card) => {
             const isLeft = card.side === "left";
+            const isClickable = !card.isIncoming;
 
             return (
               <div
@@ -58,7 +76,6 @@ export default function Lower() {
                       : "right-[calc(50%-48px)] w-[48px]"
                   }`}
                 >
-                  {/* Circuit Node Dot on Spine */}
                   <span
                     className={`absolute top-1/2 -translate-y-1/2 w-3 h-3 bg-white border-2 border-black ${
                       isLeft ? "right-[-6px]" : "left-[-6px]"
@@ -77,10 +94,23 @@ export default function Lower() {
                 {/* Card Container wrapped in ScrollReveal */}
                 <div className="w-full pl-12 md:pl-0 md:w-[calc(50%-48px)]">
                   <ScrollReveal>
-                    <div className="relative bg-black border-2 border-white rounded-[28px] md:rounded-[36px] shadow-[6px_6px_0px_#fff] p-6 md:p-8 transition-transform hover:-translate-y-1 duration-200">
+                    <div
+                      onClick={() => {
+                        if (isClickable) onSelectMilestone?.(card);
+                      }}
+                      className={`relative bg-black border-2 border-white rounded-[28px] md:rounded-[36px] shadow-[6px_6px_0px_#fff] p-6 md:p-8 transition-all duration-200 ${
+                        isClickable
+                          ? "hover:-translate-y-1.5 hover:shadow-[8px_8px_0px_#fff] cursor-pointer group"
+                          : "cursor-default"
+                      }`}
+                    >
                       {/* Card Header / Identifier */}
                       <div className="flex items-center justify-between mb-3">
-                        <h3 className="text-xl md:text-2xl font-bold tracking-tight text-white leading-snug">
+                        <h3
+                          className={`text-xl md:text-2xl font-bold tracking-tight text-white leading-snug ${
+                            isClickable ? "group-hover:underline" : ""
+                          }`}
+                        >
                           {card.title}
                         </h3>
                       </div>
