@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import ScrollReveal from "@/components/ScrollReveal";
 
@@ -65,14 +65,47 @@ const ARTICLES: Article[] = [
 
 export default function Articles() {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [slideDirection, setSlideDirection] = useState<"idle" | "next" | "prev">("idle");
+  const [isAnimating, setIsAnimating] = useState(false);
+  const [stepWidth, setStepWidth] = useState(516); // 492px card + 24px gap by default
   const [touchStart, setTouchStart] = useState<number | null>(null);
 
-  const handlePrev = () => {
-    setCurrentIndex((prev) => (prev - 1 + ARTICLES.length) % ARTICLES.length);
-  };
+  const centerCardRef = useRef<HTMLDivElement>(null);
+
+  // Measure card width + gap dynamically for responsive screen widths
+  useEffect(() => {
+    const updateStep = () => {
+      if (centerCardRef.current) {
+        setStepWidth(centerCardRef.current.offsetWidth + 24);
+      }
+    };
+    updateStep();
+    window.addEventListener("resize", updateStep);
+    return () => window.removeEventListener("resize", updateStep);
+  }, []);
 
   const handleNext = () => {
-    setCurrentIndex((prev) => (prev + 1) % ARTICLES.length);
+    if (isAnimating) return;
+    setIsAnimating(true);
+    setSlideDirection("next");
+
+    setTimeout(() => {
+      setCurrentIndex((prev) => (prev + 1) % ARTICLES.length);
+      setSlideDirection("idle");
+      setIsAnimating(false);
+    }, 500);
+  };
+
+  const handlePrev = () => {
+    if (isAnimating) return;
+    setIsAnimating(true);
+    setSlideDirection("prev");
+
+    setTimeout(() => {
+      setCurrentIndex((prev) => (prev - 1 + ARTICLES.length) % ARTICLES.length);
+      setSlideDirection("idle");
+      setIsAnimating(false);
+    }, 500);
   };
 
   const handleTouchStart = (e: React.TouchEvent) => {
@@ -91,82 +124,40 @@ export default function Articles() {
     setTouchStart(null);
   };
 
-  const getCardLayout = (index: number) => {
-    let diff = index - currentIndex;
-    const total = ARTICLES.length;
-    if (diff > total / 2) diff -= total;
-    if (diff < -total / 2) diff += total;
-
-    const isNear = Math.abs(diff) <= 2;
-
-    let translateX = "0px";
-    let scale = 1;
-    let opacity = 0;
-    let zIndex = 0;
-    let pointerEvents: "auto" | "none" = "none";
-
-    if (diff === 0) {
-      translateX = "0px";
-      scale = 1;
-      opacity = 1;
-      zIndex = 30;
-      pointerEvents = "auto";
-    } else if (diff === -1) {
-      translateX = "-min(420px, 85vw)";
-      scale = 0.88;
-      opacity = 0.35;
-      zIndex = 20;
-      pointerEvents = "auto";
-    } else if (diff === 1) {
-      translateX = "min(420px, 85vw)";
-      scale = 0.88;
-      opacity = 0.35;
-      zIndex = 20;
-      pointerEvents = "auto";
-    } else if (diff === -2) {
-      translateX = "-min(800px, 160vw)";
-      scale = 0.75;
-      opacity = 0;
-      zIndex = 10;
-    } else if (diff === 2) {
-      translateX = "min(800px, 160vw)";
-      scale = 0.75;
-      opacity = 0;
-      zIndex = 10;
-    } else {
-      translateX = diff > 0 ? "900px" : "-900px";
-      scale = 0.7;
-      opacity = 0;
-      zIndex = 0;
-    }
-
+  // 5 slots arranged side-by-side in flex-row: [-2, -1, 0, 1, 2]
+  // Slot 2 (offset 0) is the center active card
+  // Slot 1 (offset -1) is the left card
+  // Slot 3 (offset 1) is the right card
+  const slots = [-2, -1, 0, 1, 2].map((offset) => {
+    const articleIndex =
+      (currentIndex + offset + ARTICLES.length * 10) % ARTICLES.length;
     return {
-      diff,
-      style: {
-        transform: `translate3d(calc(-50% + ${translateX}), -50%, 0) scale(${scale})`,
-        opacity,
-        zIndex,
-        pointerEvents,
-        transition: isNear
-          ? "transform 550ms cubic-bezier(0.22, 1, 0.36, 1), opacity 500ms ease, scale 550ms ease"
-          : "none",
-      },
+      offset,
+      article: ARTICLES[articleIndex],
     };
-  };
+  });
+
+  // Calculate track translation
+  const trackOffset =
+    slideDirection === "next"
+      ? -stepWidth
+      : slideDirection === "prev"
+      ? stepWidth
+      : 0;
 
   return (
     <section className="w-full bg-[#070707] py-24 px-4 overflow-hidden flex flex-col items-center select-none">
-      {/* Title with Rise-Up Scroll Reveal */}
-      <ScrollReveal className="w-full flex justify-center">
+      {/* 1. Heading with Rise-Up Scroll Reveal */}
+      <ScrollReveal delay={0} className="w-full flex justify-center">
         <h2 className="text-4xl md:text-6xl lg:text-7xl font-bold text-[#fefbfb] text-center tracking-tight mb-16">
           Medium - Stories and Articles
         </h2>
       </ScrollReveal>
 
-      {/* Infinite Carousel Stage with Rise-Up Scroll Reveal */}
-      <ScrollReveal className="w-full flex justify-center">
+      {/* 2. Side-by-Side Sliding Stage with Rise-Up Scroll Reveal */}
+      <ScrollReveal delay={150} className="w-full flex justify-center">
         <div
-          className="relative w-full max-w-6xl h-[320px] flex items-center justify-center my-6"
+          className="relative w-full max-w-6xl flex items-center justify-center my-6 overflow-hidden md:overflow-visible"
           onTouchStart={handleTouchStart}
           onTouchEnd={handleTouchEnd}
         >
@@ -175,7 +166,8 @@ export default function Articles() {
             type="button"
             onClick={handlePrev}
             aria-label="Previous article"
-            className="absolute left-2 md:left-6 z-40 p-3 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors cursor-pointer shadow-lg backdrop-blur-sm"
+            disabled={isAnimating}
+            className="absolute left-2 md:left-6 z-40 p-3 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors cursor-pointer shadow-lg backdrop-blur-sm disabled:opacity-50"
           >
             <svg
               width="24"
@@ -191,52 +183,100 @@ export default function Articles() {
             </svg>
           </button>
 
-          {/* Cards Track Container */}
-          <div className="relative w-full h-full flex items-center justify-center overflow-hidden md:overflow-visible">
-            {ARTICLES.map((article, index) => {
-              const { diff, style } = getCardLayout(index);
-              const isCenter = diff === 0;
-              const isLeft = diff === -1;
-              const isRight = diff === 1;
+          {/* Cards Track: Flex Row Side-by-Side */}
+          <div
+            className="flex flex-row items-center justify-center gap-6"
+            style={{
+              transform: `translate3d(${trackOffset}px, 0, 0)`,
+              transition:
+                slideDirection === "idle"
+                  ? "none"
+                  : "transform 500ms cubic-bezier(0.25, 1, 0.5, 1)",
+            }}
+          >
+            {slots.map(({ offset, article }) => {
+              // Target state when sliding
+              const isCenter =
+                (slideDirection === "idle" && offset === 0) ||
+                (slideDirection === "next" && offset === 1) ||
+                (slideDirection === "prev" && offset === -1);
 
-              if (isCenter) {
+              const isLeft =
+                (slideDirection === "idle" && offset === -1) ||
+                (slideDirection === "next" && offset === 0) ||
+                (slideDirection === "prev" && offset === -2);
+
+              const isRight =
+                (slideDirection === "idle" && offset === 1) ||
+                (slideDirection === "next" && offset === 2) ||
+                (slideDirection === "prev" && offset === 0);
+
+              const isVisible = isCenter || isLeft || isRight;
+
+              // Center card container
+              if (offset === 0) {
                 return (
-                  <Link
-                    key={article.id}
-                    href={article.link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    style={style}
-                    className="absolute top-1/2 left-1/2 flex flex-col justify-between w-[88vw] sm:w-[420px] md:w-[492px] h-[269px] rounded-[40px] bg-white text-black p-8 shadow-[0_12px_45px_rgba(255,255,255,0.18)] cursor-pointer hover:shadow-[0_16px_50px_rgba(255,255,255,0.28)]"
+                  <div
+                    key={`${article.id}-${offset}`}
+                    ref={centerCardRef}
+                    className="flex-shrink-0"
                   >
-                    <h3 className="text-2xl md:text-3xl font-bold leading-snug line-clamp-2">
-                      {article.title}
-                    </h3>
-                    <p className="text-zinc-600 text-sm md:text-base text-center leading-relaxed mt-2 line-clamp-3">
-                      {article.subtitle}
-                    </p>
-                    <div className="h-2" />
-                  </Link>
+                    <Link
+                      href={article.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={`flex flex-col justify-between w-[85vw] sm:w-[420px] md:w-[492px] h-[269px] rounded-[40px] p-8 cursor-pointer transition-all duration-500 ease-out ${
+                        isCenter
+                          ? "bg-white text-black shadow-[0_12px_45px_rgba(255,255,255,0.18)] scale-100 opacity-100 z-20 hover:shadow-[0_16px_50px_rgba(255,255,255,0.28)]"
+                          : "bg-white/10 text-white scale-90 opacity-40 z-10 border border-white/10"
+                      }`}
+                    >
+                      <h3 className="text-2xl md:text-3xl font-bold leading-snug line-clamp-2">
+                        {article.title}
+                      </h3>
+                      <p
+                        className={`text-sm md:text-base text-center leading-relaxed mt-2 line-clamp-3 ${
+                          isCenter ? "text-zinc-600" : "text-zinc-400"
+                        }`}
+                      >
+                        {article.subtitle}
+                      </p>
+                      <div className="h-2" />
+                    </Link>
+                  </div>
                 );
               }
 
+              // Side cards
               return (
                 <div
-                  key={article.id}
-                  onClick={isLeft ? handlePrev : isRight ? handleNext : undefined}
-                  style={style}
-                  className={`absolute top-1/2 left-1/2 flex flex-col justify-between w-[88vw] sm:w-[380px] md:w-[460px] h-[240px] md:h-[269px] rounded-[40px] border border-white/10 p-8 select-none overflow-hidden ${
-                    isLeft
-                      ? "bg-gradient-to-l from-white/20 to-transparent cursor-pointer hover:opacity-50"
+                  key={`${article.id}-${offset}`}
+                  onClick={() => {
+                    if (offset === -1) handlePrev();
+                    if (offset === 1) handleNext();
+                  }}
+                  className={`flex-shrink-0 flex flex-col justify-between w-[85vw] sm:w-[420px] md:w-[492px] h-[269px] rounded-[40px] p-8 border border-white/10 select-none overflow-hidden transition-all duration-500 ease-out ${
+                    isCenter
+                      ? "bg-white text-black shadow-[0_12px_45px_rgba(255,255,255,0.18)] scale-100 opacity-100 z-20 cursor-pointer"
+                      : isLeft
+                      ? "bg-gradient-to-l from-white/20 to-transparent text-white scale-90 opacity-40 hover:opacity-60 z-10 cursor-pointer"
                       : isRight
-                      ? "bg-gradient-to-r from-white/20 to-transparent cursor-pointer hover:opacity-50"
-                      : "bg-white/5"
+                      ? "bg-gradient-to-r from-white/20 to-transparent text-white scale-90 opacity-40 hover:opacity-60 z-10 cursor-pointer"
+                      : "opacity-0 scale-75 pointer-events-none"
                   }`}
                 >
-                  <h3 className="text-xl md:text-2xl font-bold text-white line-clamp-2">
+                  <h3
+                    className={`text-xl md:text-2xl font-bold line-clamp-2 ${
+                      isCenter ? "text-black" : "text-white"
+                    }`}
+                  >
                     {article.title}
                   </h3>
-                  <p className="text-zinc-400 text-xs md:text-sm line-clamp-2">
+                  <p
+                    className={`text-xs md:text-sm line-clamp-2 ${
+                      isCenter ? "text-zinc-600" : "text-zinc-400"
+                    }`}
+                  >
                     {article.subtitle}
                   </p>
                 </div>
@@ -249,7 +289,8 @@ export default function Articles() {
             type="button"
             onClick={handleNext}
             aria-label="Next article"
-            className="absolute right-2 md:right-6 z-40 p-3 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors cursor-pointer shadow-lg backdrop-blur-sm"
+            disabled={isAnimating}
+            className="absolute right-2 md:right-6 z-40 p-3 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors cursor-pointer shadow-lg backdrop-blur-sm disabled:opacity-50"
           >
             <svg
               width="24"
@@ -267,8 +308,8 @@ export default function Articles() {
         </div>
       </ScrollReveal>
 
-      {/* Explore Button with Rise-Up Scroll Reveal */}
-      <ScrollReveal className="w-full flex justify-center">
+      {/* 3. Explore Button with Rise-Up Scroll Reveal */}
+      <ScrollReveal delay={300} className="w-full flex justify-center">
         <Link
           href="https://medium.com/@rushilmishra7"
           target="_blank"

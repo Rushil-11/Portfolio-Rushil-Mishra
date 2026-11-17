@@ -5,11 +5,13 @@ import { useEffect, useRef, useState, ReactNode } from "react";
 interface ScrollRevealProps {
   children: ReactNode;
   className?: string;
+  delay?: number;
 }
 
 export default function ScrollReveal({
   children,
   className = "",
+  delay = 0,
 }: ScrollRevealProps) {
   const [isVisible, setIsVisible] = useState(false);
   const ref = useRef<HTMLDivElement | null>(null);
@@ -42,6 +44,9 @@ export default function ScrollReveal({
   return (
     <div
       ref={ref}
+      style={{
+        transitionDelay: `${delay}ms`,
+      }}
       className={`transition-all duration-700 ease-out ${
         isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"
       } ${className}`}
