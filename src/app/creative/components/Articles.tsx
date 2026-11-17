@@ -67,7 +67,7 @@ export default function Articles() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [slideDirection, setSlideDirection] = useState<"idle" | "next" | "prev">("idle");
   const [isAnimating, setIsAnimating] = useState(false);
-  const [stepWidth, setStepWidth] = useState(516); // 492px card + 24px gap by default
+  const [stepWidth, setStepWidth] = useState(516);
   const [touchStart, setTouchStart] = useState<number | null>(null);
 
   const centerCardRef = useRef<HTMLDivElement>(null);
@@ -125,9 +125,6 @@ export default function Articles() {
   };
 
   // 5 slots arranged side-by-side in flex-row: [-2, -1, 0, 1, 2]
-  // Slot 2 (offset 0) is the center active card
-  // Slot 1 (offset -1) is the left card
-  // Slot 3 (offset 1) is the right card
   const slots = [-2, -1, 0, 1, 2].map((offset) => {
     const articleIndex =
       (currentIndex + offset + ARTICLES.length * 10) % ARTICLES.length;
@@ -137,7 +134,6 @@ export default function Articles() {
     };
   });
 
-  // Calculate track translation
   const trackOffset =
     slideDirection === "next"
       ? -stepWidth
@@ -213,7 +209,28 @@ export default function Articles() {
 
               const isVisible = isCenter || isLeft || isRight;
 
-              // Center card container
+              // Shared card content with identical typography and alignment
+              const cardContent = (
+                <>
+                  <h3
+                    className={`text-2xl md:text-3xl font-bold leading-snug line-clamp-2 transition-colors duration-500 ${
+                      isCenter ? "text-black" : "text-white"
+                    }`}
+                  >
+                    {article.title}
+                  </h3>
+                  <p
+                    className={`text-sm md:text-base leading-relaxed mt-3 line-clamp-3 transition-colors duration-500 ${
+                      isCenter ? "text-zinc-600" : "text-zinc-300"
+                    }`}
+                  >
+                    {article.subtitle}
+                  </p>
+                  <div className="h-2" />
+                </>
+              );
+
+              // Center card: opens medium link
               if (offset === 0) {
                 return (
                   <div
@@ -225,29 +242,19 @@ export default function Articles() {
                       href={article.link}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className={`flex flex-col justify-between w-[85vw] sm:w-[420px] md:w-[492px] h-[269px] rounded-[40px] p-8 cursor-pointer transition-all duration-500 ease-out ${
+                      className={`flex-shrink-0 flex flex-col justify-between w-[85vw] sm:w-[420px] md:w-[492px] h-[269px] rounded-[40px] p-8 border transition-all duration-500 ease-out ${
                         isCenter
-                          ? "bg-white text-black shadow-[0_12px_45px_rgba(255,255,255,0.18)] scale-100 opacity-100 z-20 hover:shadow-[0_16px_50px_rgba(255,255,255,0.28)]"
-                          : "bg-white/10 text-white scale-90 opacity-40 z-10 border border-white/10"
+                          ? "bg-white text-black border-transparent shadow-[0_12px_45px_rgba(255,255,255,0.18)] opacity-100 z-20 cursor-pointer hover:shadow-[0_16px_50px_rgba(255,255,255,0.28)]"
+                          : "bg-[#1f1f1f] text-white border-white/10 opacity-50 hover:opacity-75 z-10 cursor-pointer"
                       }`}
                     >
-                      <h3 className="text-2xl md:text-3xl font-bold leading-snug line-clamp-2">
-                        {article.title}
-                      </h3>
-                      <p
-                        className={`text-sm md:text-base text-center leading-relaxed mt-2 line-clamp-3 ${
-                          isCenter ? "text-zinc-600" : "text-zinc-400"
-                        }`}
-                      >
-                        {article.subtitle}
-                      </p>
-                      <div className="h-2" />
+                      {cardContent}
                     </Link>
                   </div>
                 );
               }
 
-              // Side cards
+              // Side / outer cards
               return (
                 <div
                   key={`${article.id}-${offset}`}
@@ -255,30 +262,15 @@ export default function Articles() {
                     if (offset === -1) handlePrev();
                     if (offset === 1) handleNext();
                   }}
-                  className={`flex-shrink-0 flex flex-col justify-between w-[85vw] sm:w-[420px] md:w-[492px] h-[269px] rounded-[40px] p-8 border border-white/10 select-none overflow-hidden transition-all duration-500 ease-out ${
-                    isCenter
-                      ? "bg-white text-black shadow-[0_12px_45px_rgba(255,255,255,0.18)] scale-100 opacity-100 z-20 cursor-pointer"
-                      : isLeft
-                      ? "bg-gradient-to-l from-white/20 to-transparent text-white scale-90 opacity-40 hover:opacity-60 z-10 cursor-pointer"
-                      : isRight
-                      ? "bg-gradient-to-r from-white/20 to-transparent text-white scale-90 opacity-40 hover:opacity-60 z-10 cursor-pointer"
-                      : "opacity-0 scale-75 pointer-events-none"
+                  className={`flex-shrink-0 flex flex-col justify-between w-[85vw] sm:w-[420px] md:w-[492px] h-[269px] rounded-[40px] p-8 border select-none overflow-hidden transition-all duration-500 ease-out ${
+                    !isVisible
+                      ? "opacity-0 pointer-events-none border-transparent"
+                      : isCenter
+                      ? "bg-white text-black border-transparent shadow-[0_12px_45px_rgba(255,255,255,0.18)] opacity-100 z-20 cursor-pointer"
+                      : "bg-[#1f1f1f] text-white border-white/10 opacity-50 hover:opacity-75 z-10 cursor-pointer"
                   }`}
                 >
-                  <h3
-                    className={`text-xl md:text-2xl font-bold line-clamp-2 ${
-                      isCenter ? "text-black" : "text-white"
-                    }`}
-                  >
-                    {article.title}
-                  </h3>
-                  <p
-                    className={`text-xs md:text-sm line-clamp-2 ${
-                      isCenter ? "text-zinc-600" : "text-zinc-400"
-                    }`}
-                  >
-                    {article.subtitle}
-                  </p>
+                  {cardContent}
                 </div>
               );
             })}
