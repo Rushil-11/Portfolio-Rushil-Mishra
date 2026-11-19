@@ -120,31 +120,34 @@ export default function Graph({ initialData }: GraphProps) {
 
   return (
     <div className="flex flex-col justify-center items-center w-full lg:w-1/2 p-4">
-      {/* Platform Switcher Tabs */}
-      <div className="flex gap-3 mb-6">
-        {(["LeetCode", "Codeforces", "CodeChef"] as const).map((plat) => (
-          <button
-            key={plat}
-            type="button"
-            onClick={() => {
-              setSelectedPlatform(plat);
-              setHoveredPoint(null);
-            }}
-            className={`px-5 py-2 rounded-full text-sm font-semibold transition-all cursor-pointer ${
-              selectedPlatform === plat
-                ? "bg-black text-white shadow-md"
-                : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-            }`}
-          >
-            {plat}
-          </button>
-        ))}
+      {/* Platform Switcher Tabs (Styled like Navbar buttons) */}
+      <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4 mb-4">
+        {(["LeetCode", "Codeforces", "CodeChef"] as const).map((plat) => {
+          const isActive = selectedPlatform === plat;
+          return (
+            <button
+              key={plat}
+              type="button"
+              onClick={() => {
+                setSelectedPlatform(plat);
+                setHoveredPoint(null);
+              }}
+              className={`px-5 py-2 md:px-6 md:py-2.5 rounded-full text-base md:text-xl font-semibold border-2 border-black transition-all cursor-pointer ${
+                isActive
+                  ? "bg-white text-black shadow-[4px_4px_0px_#000]"
+                  : "bg-black text-white hover:bg-neutral-800 shadow-[2px_2px_0px_#000]"
+              }`}
+            >
+              {plat}
+            </button>
+          );
+        })}
       </div>
 
       {/* Enlarged Graph Container */}
       <div className="relative w-full max-w-[640px]">
         <svg
-          viewBox="0 0 680 430"
+          viewBox="0 0 680 405"
           className="w-full h-auto overflow-visible select-none"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
@@ -286,23 +289,23 @@ export default function Graph({ initialData }: GraphProps) {
           )}
         </svg>
 
-        {/* Text Stats Underneath */}
-        <div className="flex flex-col items-center text-center mt-6">
+        {/* Text Stats Underneath (Reduced gap with graph) */}
+        <div className="flex flex-col items-center text-center mt-1">
           <p className="text-lg md:text-xl font-semibold text-black">
             Rating: {currentRating}{" "}
             <span className="text-zinc-600 font-normal">(Max Rated {maxRated})</span>
           </p>
-          <p className="text-base md:text-lg font-medium text-black mt-1">
+          <p className="text-base md:text-lg font-medium text-black mt-0.5">
             Ranking: {currentData.ranking}
           </p>
 
-          {/* Action Buttons: More (Next Link) & Codolio (Next Link) */}
-          <div className="flex items-center gap-4 mt-6">
+          {/* Action Buttons: More & Codolio (Increased Text Size) */}
+          <div className="flex items-center gap-4 mt-5">
             <Link
               href={currentData.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="px-8 py-2.5 rounded-full bg-black text-white text-base font-semibold hover:bg-zinc-800 transition-colors shadow-sm inline-block"
+              className="px-8 py-2.5 rounded-full bg-black text-white text-xl md:text-2xl font-bold hover:bg-zinc-800 transition-colors shadow-sm inline-block"
             >
               More
             </Link>
@@ -310,7 +313,7 @@ export default function Graph({ initialData }: GraphProps) {
               href="https://codolio.com/profile/Rushil_211"
               target="_blank"
               rel="noopener noreferrer"
-              className="px-8 py-2.5 rounded-full bg-white text-black border-2 border-black text-base font-semibold hover:bg-zinc-100 transition-colors shadow-[3px_3px_0px_#000] inline-block"
+              className="px-8 py-2.5 rounded-full bg-white text-black border-2 border-black text-xl md:text-2xl font-bold hover:bg-zinc-100 transition-colors shadow-[3px_3px_0px_#000] inline-block"
             >
               Codolio
             </Link>
