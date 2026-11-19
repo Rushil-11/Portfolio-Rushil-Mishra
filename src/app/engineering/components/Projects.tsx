@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import ScrollReveal from "@/components/ScrollReveal";
 
 export default function Projects() {
@@ -8,19 +9,19 @@ export default function Projects() {
       title: "Contact Manager",
       description:
         "An object-oriented management system built to organize, search, and securely handle contacts.",
-      tech: ["C++", "File I/O", "OOP"],
+      link: "https://github.com/Rushil-11/Smart-Contact-Manager-Project---Using-Object-Oriented-Programming",
     },
     {
       title: "PyClimaExplorer",
       description:
         "Interactive climate and meteorological analytics platform processing live atmospheric data.",
-      tech: ["Python", "Analytics", "APIs"],
+      link: "https://github.com/Rushil-11/PyClimaExplorer",
     },
     {
-      title: "AlgoVisualizer",
+      title: "Portfolio",
       description:
-        "Visual exploration tool demonstrating core graph algorithms, sorting, and dynamic programming.",
-      tech: ["TypeScript", "Next.js", "Tailwind CSS"],
+        "Personal portfolio web application showcasing engineering milestones, live competitive programming analytics, and creative writing.",
+      link: "https://github.com/Rushil-11/Portfolio-Rushil-Mishra",
     },
   ];
 
@@ -37,26 +38,21 @@ export default function Projects() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl w-full">
         {projects.map((proj, idx) => (
           <ScrollReveal key={proj.title} delay={idx * 150} className="h-full">
-            <div className="h-full bg-black border border-[#fdfcfc] rounded-[40px] p-8 shadow-[10px_10px_25px_10px_rgba(99,99,99,0.25)] flex flex-col justify-between min-h-[305px] hover:border-white transition-all duration-200 hover:-translate-y-1">
+            <Link
+              href={proj.link}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block h-full bg-black border border-[#fdfcfc] rounded-[40px] p-8 shadow-[10px_10px_25px_10px_rgba(99,99,99,0.25)] flex flex-col justify-between min-h-[280px] hover:border-white transition-all duration-200 hover:-translate-y-1 group cursor-pointer"
+            >
               <div>
-                <h3 className="text-3xl md:text-4xl font-bold text-white mb-4">
+                <h3 className="text-3xl md:text-4xl font-bold text-white mb-4 group-hover:underline">
                   {proj.title}
                 </h3>
                 <p className="text-zinc-400 text-base leading-relaxed">
                   {proj.description}
                 </p>
               </div>
-              <div className="flex flex-wrap gap-2 mt-6">
-                {proj.tech.map((t) => (
-                  <span
-                    key={t}
-                    className="px-3.5 py-1 rounded-full text-xs font-medium bg-zinc-900 text-zinc-300 border border-zinc-700"
-                  >
-                    {t}
-                  </span>
-                ))}
-              </div>
-            </div>
+            </Link>
           </ScrollReveal>
         ))}
       </div>
