@@ -132,10 +132,10 @@ export default function Graph({ initialData }: GraphProps) {
                 setSelectedPlatform(plat);
                 setHoveredPoint(null);
               }}
-              className={`px-5 py-2 md:px-6 md:py-2.5 rounded-full text-base md:text-xl font-semibold border-2 border-black transition-all cursor-pointer ${
+              className={`px-5 py-2 md:px-6 md:py-2.5 rounded-full text-base md:text-xl font-normal transition-all cursor-pointer ${
                 isActive
-                  ? "bg-white text-black shadow-[4px_4px_0px_#000]"
-                  : "bg-black text-white hover:bg-neutral-800 shadow-[2px_2px_0px_#000]"
+                  ? "bg-white text-black"
+                  : "bg-black text-white hover:bg-neutral-800"
               }`}
             >
               {plat}
