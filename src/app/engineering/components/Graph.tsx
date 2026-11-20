@@ -135,7 +135,7 @@ export default function Graph({ initialData }: GraphProps) {
               className={`px-5 py-2 md:px-6 md:py-2.5 rounded-full text-base md:text-xl font-normal transition-all cursor-pointer ${
                 isActive
                   ? "bg-white text-black"
-                  : "bg-black text-white hover:bg-neutral-800"
+                  : "bg-black text-white"
               }`}
             >
               {plat}
@@ -211,7 +211,7 @@ export default function Graph({ initialData }: GraphProps) {
             textAnchor="end"
             className="text-[15px] fill-black font-bold font-sans tracking-wide"
           >
-            Rating ↑
+          Rating ↑
           </text>
 
           <text
@@ -220,7 +220,7 @@ export default function Graph({ initialData }: GraphProps) {
             textAnchor="end"
             className="text-[13px] fill-zinc-500 font-bold font-sans"
           >
-            0
+          0
           </text>
 
           <text

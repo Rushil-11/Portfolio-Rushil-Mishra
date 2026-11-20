@@ -73,10 +73,10 @@ export default function Score({
         
         {/* Top: Big Solved/Rating Count & Platform Name */}
         <div className="text-center mt-2">
-          <h2 className="text-7xl md:text-8xl font-bold tracking-tight text-black transition-all">
+          <h2 className="text-7xl lg:text-9xl font-bold tracking-tight text-black transition-all">
             {currentCard.mainNumber}
           </h2>
-          <h3 className="text-3xl md:text-4xl font-semibold tracking-wide text-black mt-2">
+          <h3 className="text-xl lg:text-5xl font-semibold tracking-wide text-black mt-2">
             {currentCard.platform}
           </h3>
         </div>
@@ -99,7 +99,7 @@ export default function Score({
           </button>
 
           {/* Breakdown Stats */}
-          <div className="flex flex-col gap-3 text-xl md:text-2xl font-medium text-black w-48 min-h-[110px] justify-center">
+          <div className="flex flex-col gap-3 text-3xl lg:text-3xl font-medium text-black w-48 min-h-[110px] justify-center">
             {currentCard.stats.map((stat) => (
               <div key={stat.label} className="flex justify-between">
                 <span>{stat.label}</span>
@@ -122,21 +122,6 @@ export default function Score({
               />
             </svg>
           </button>
-        </div>
-
-        {/* Bottom indicator dots */}
-        <div className="flex gap-2 mb-1">
-          {cards.map((card, i) => (
-            <button
-              key={card.platform}
-              type="button"
-              onClick={() => setCurrentIndex(i)}
-              className={`h-2.5 rounded-full transition-all cursor-pointer ${
-                currentIndex === i ? "w-6 bg-black" : "w-2.5 bg-zinc-300 hover:bg-zinc-400"
-              }`}
-              aria-label={`Go to ${card.platform}`}
-            />
-          ))}
         </div>
       </div>
     </div>

@@ -21,7 +21,7 @@ export default async function Engineering() {
   };
 
   return (
-    <main className="flex flex-col w-full bg-white">
+    <main className="flex flex-col mt-5 w-full bg-white">
       {/* Top Scoreboard & Graph Section */}
       <section className="min-h-[calc(100vh-5rem)] w-full flex flex-col lg:flex-row items-center justify-center px-6 lg:px-16 gap-8 pt-16 lg:pt-24 pb-16">
         <Score

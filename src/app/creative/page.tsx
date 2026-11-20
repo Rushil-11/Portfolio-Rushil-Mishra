@@ -5,7 +5,7 @@ export default function Creative() {
   return (
     <main className="flex flex-col w-full">
       {/* Artwork Bubbles Showcase (Desktop - 5) */}
-      <section className="relative flex mt-10 bg-white min-h-screen w-full justify-center overflow-hidden">
+      <section className="relative flex mt-6 bg-white min-h-screen w-full justify-center overflow-hidden">
         <h2 className="flex absolute text-4xl w-60 text-center top-85 font-bold">
           Designing and Creative Work
         </h2>

@@ -2,6 +2,8 @@
 
 import ScrollReveal from "@/components/ScrollReveal";
 import { MilestoneItem } from "./MilestoneModal";
+import img4 from "../images/img4.jpeg";
+import img5 from "../images/img5.jpeg";
 
 interface LowerProps {
   onSelectMilestone?: (item: MilestoneItem) => void;
@@ -14,32 +16,29 @@ export default function Lower({ onSelectMilestone }: LowerProps) {
   })[] = [
     {
       id: "04",
-      title: "Smart India Hackathon (SIH)",
+      title: "Codechef 2 Star",
       side: "right",
-      text: "Competed in the internal hackathon, architecting scalable solutions and navigating problem breakdowns to tackle large-scale practical constraints.",
+      text: "Conquered my first major competitive programming milestone. A validation of algorithmic discipline, contest composure, and consistent problem-solving progress.",
       detailedText:
-        "Internal hackathon competition architecting scalable systems and tackling constraint-heavy real-world problem statements.",
-      hasCredential: true,
+        "After 10+ contests and a constant pace in CP, witnessing my peers getting a green tag on their profiles, making their first LinkedIn Post was giving a sense of FOMO. But still, with consistent efforts, many hidden test cases failure, I got to hit the bar for getting into Div-3 on Codechef. This was the first breakthrough which made the coming journey of DSA feel like an easy piece.",
       isIncoming: false,
-      image: null,
+      image: img5,
     },
     {
       id: "05",
-      title: "CodeChef 2-Star Breakthrough",
+      title: "Smart India Hackathon (SIH)",
       side: "left",
-      text: "Conquered my first major competitive programming milestone. A validation of algorithmic discipline, contest composure, and consistent problem-solving progress.",
+      text: "Competed in the internal hackathon, architecting scalable solutions and navigating problem breakdowns to tackle large-scale practical constraints.",
       detailedText:
-        "Milestone achievement in competitive programming, demonstrating algorithmic discipline, rating progression to 2-Star, and consistent performance across ranked rounds.",
-      hasCredential: false,
+        "Internal hackathon competition architecting scalable systems and tackling constraint-heavy real-world problem statements.",
       isIncoming: false,
-      image: null,
+      image: img4,
     },
     {
       id: "06",
       title: "[06 // Incoming]",
       side: "right",
       text: "More exciting milestones are coming...",
-      hasCredential: false,
       isIncoming: true,
       image: null,
     },
@@ -63,23 +62,20 @@ export default function Lower({ onSelectMilestone }: LowerProps) {
             return (
               <div
                 key={card.id}
-                className={`relative flex items-center w-full ${
-                  isLeft ? "md:justify-start" : "md:justify-end"
-                }`}
+                className={`relative flex items-center w-full ${isLeft ? "md:justify-start" : "md:justify-end"
+                  }`}
               >
                 {/* 90-Degree Circuit Branch Connector (Desktop) */}
                 <div
                   aria-hidden="true"
-                  className={`hidden md:block absolute top-1/2 -translate-y-1/2 h-[3px] bg-white ${
-                    isLeft
-                      ? "left-[calc(50%-48px)] w-[48px]"
-                      : "right-[calc(50%-48px)] w-[48px]"
-                  }`}
+                  className={`hidden md:block absolute top-1/2 -translate-y-1/2 h-[3px] bg-white ${isLeft
+                    ? "left-[calc(50%-48px)] w-[48px]"
+                    : "right-[calc(50%-48px)] w-[48px]"
+                    }`}
                 >
                   <span
-                    className={`absolute top-1/2 -translate-y-1/2 w-3 h-3 bg-white border-2 border-black ${
-                      isLeft ? "right-[-6px]" : "left-[-6px]"
-                    }`}
+                    className={`absolute top-1/2 -translate-y-1/2 w-3 h-3 bg-white border-2 border-black ${isLeft ? "right-[-6px]" : "left-[-6px]"
+                      }`}
                   />
                 </div>
 
@@ -98,19 +94,14 @@ export default function Lower({ onSelectMilestone }: LowerProps) {
                       onClick={() => {
                         if (isClickable) onSelectMilestone?.(card);
                       }}
-                      className={`relative bg-black border-2 border-white rounded-[28px] md:rounded-[36px] shadow-[6px_6px_0px_#fff] p-6 md:p-8 transition-all duration-200 ${
-                        isClickable
-                          ? "hover:-translate-y-1.5 hover:shadow-[8px_8px_0px_#fff] cursor-pointer group"
-                          : "cursor-default"
-                      }`}
+                      className={`relative bg-black border-2 border-white rounded-[28px] md:rounded-[36px] shadow-[6px_6px_0px_#fff] p-6 md:p-8 transition-all duration-200 ${isClickable
+                        ? "hover:-translate-y-1.5 hover:shadow-[8px_8px_0px_#fff] cursor-pointer group"
+                        : "cursor-default"
+                        }`}
                     >
                       {/* Card Header / Identifier */}
                       <div className="flex items-center justify-between mb-3">
-                        <h3
-                          className={`text-xl md:text-2xl font-bold tracking-tight text-white leading-snug ${
-                            isClickable ? "group-hover:underline" : ""
-                          }`}
-                        >
+                        <h3 className="text-xl md:text-2xl font-bold tracking-tight text-white leading-snug">
                           {card.title}
                         </h3>
                       </div>
@@ -127,15 +118,6 @@ export default function Lower({ onSelectMilestone }: LowerProps) {
                           </span>
                         )}
                       </p>
-
-                      {/* Credential Marker (Pure CSS Data Depiction, No Links) */}
-                      {card.hasCredential && (
-                        <div className="mt-5 flex justify-end">
-                          <span className="text-xs font-mono tracking-wider font-semibold px-2.5 py-1 border border-white bg-white text-black rounded-sm select-none shadow-[2px_2px_0px_#444]">
-                            [ Credential ↗ ]
-                          </span>
-                        </div>
-                      )}
                     </div>
                   </ScrollReveal>
                 </div>

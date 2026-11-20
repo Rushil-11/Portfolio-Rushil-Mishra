@@ -2,6 +2,9 @@
 
 import ScrollReveal from "@/components/ScrollReveal";
 import { MilestoneItem } from "./MilestoneModal";
+import img1 from "../images/img1.jpeg";
+import img2 from "../images/img2.jpeg";
+import img3 from "../images/img3.jpeg";
 
 interface UpperProps {
   onSelectMilestone?: (item: MilestoneItem) => void;
@@ -11,38 +14,35 @@ export default function Upper({ onSelectMilestone }: UpperProps) {
   const cards: (MilestoneItem & { side: "left" | "right" })[] = [
     {
       id: "01",
-      title: "IEEE Technical Debate",
+      title: "IEEE Debate",
       side: "left",
       text: "This was the first event I formally participated in. Proving the point of AI replacing the modern-day teachers, secured second position in the competition.",
       detailedText:
-        "Proving the point of AI replacing the modern-day teachers in our first formal debate competition, securing second position among diverse university participants.",
-      hasCredential: false,
-      image: null,
+        "IEEE Debate was my first exposure towards the College activities where participating with a peer, I got the opportunity to argue on the topic 'Will Artificial Intelligence replace teachers?'\n\nMy take was for the notion, arguing how multi-modal systems for emotional sensing, algorithmic approach and large amount of dataset can enable in future a machine which can replace human teachers in an efficient manner. The rebuttals were questioning my position's strength where I countered with the fact of algorithmic approach. Finally, after the round ended, I secured the runner up position which gave my participation a fruitful conclusion.",
+      image: img1,
     },
     {
       id: "02",
-      title: "TEDx Debate and Group Discussion",
+      title: "TEDx Debate and GD",
       side: "right",
       text: "This was the second opportunity where I got to discuss and oppose the utility of democracy and later in debate, presented the point of privacy.",
       detailedText:
-        "Engaged in in-depth discourse opposing the utility of unconstrained democratic frameworks, followed by a formal debate presenting privacy preservation in the digital era.",
-      hasCredential: true,
-      image: null,
+        "Our college hosted a TEDx event in the campus, inviting learned and experienced speakers in the campus for enlightening the students. Prevailing to this, a Group Discussion (Round-1) and Debate (Round-2) was organised. Leading a group of four, we got the opportunity to discuss a social topic, which is the utility of democracy in today's context. And surprisingly, I was sitting prepared with the same topic! Then what? I presented the POV exploring the disadvantages of democracy and our efforts helped our group to qualify for the Debate. The debate happened on several different topics giving us an inspiring experience.",
+      image: img2,
     },
     {
       id: "03",
-      title: "Technex — IIT BHU (March 2026)",
+      title: "Technex Hackathon",
       side: "left",
       text: "Participated in this national-level hackathon sprint. Focused on rapid solution engineering, team execution, and shipping functional software within a tight competitive window.",
       detailedText:
-        "National-level hackathon sprint at IIT BHU. Focused on rapid solution engineering, end-to-end architecture, and shipping robust software within a high-intensity deadline.",
-      hasCredential: true,
-      image: null,
+        "This was my first inter-college Hackathon. Recommended by my senior, a team of first year, no experience with fancy terminologies like machine learning, scikit learn and many more, we jumped with the enthusiasm  of participation in the mania of thorough experts. The experience in the hackathon taught us a lot of things and primarily one thing - 'Build me a XYZ app or software' is the worst way to use AI agents to code something and...most importantly, the knowledge of the respective tech is needed to have a coding agent working.",
+      image: img3,
     },
   ];
 
   return (
-    <section className="relative w-full min-h-screen bg-white text-black py-20 md:py-28 px-4 sm:px-6 md:px-12 flex flex-col justify-center overflow-hidden">
+    <section className="relative w-full min-h-screen bg-white text-black mt-20 py-20 md:py-28 px-4 sm:px-6 md:px-12 flex flex-col justify-center overflow-hidden">
       {/* Central Spine extending full screen-height */}
       <div
         aria-hidden="true"
@@ -95,7 +95,7 @@ export default function Upper({ onSelectMilestone }: UpperProps) {
                     >
                       {/* Card Header / Identifier */}
                       <div className="flex items-center justify-between mb-3">
-                        <h3 className="text-xl md:text-2xl font-bold tracking-tight text-black leading-snug group-hover:underline">
+                        <h3 className="text-xl md:text-2xl font-bold tracking-tight text-black leading-snug">
                           {card.title}
                         </h3>
                       </div>
@@ -104,15 +104,6 @@ export default function Upper({ onSelectMilestone }: UpperProps) {
                       <p className="text-sm md:text-base text-neutral-800 leading-relaxed font-normal">
                         {card.text}
                       </p>
-
-                      {/* Credential Marker (Pure CSS Data Depiction, No Links) */}
-                      {card.hasCredential && (
-                        <div className="mt-5 flex justify-end">
-                          <span className="text-xs font-mono tracking-wider font-semibold px-2.5 py-1 border border-black bg-black text-white rounded-sm select-none shadow-[2px_2px_0px_#888]">
-                            [ Credential ↗ ]
-                          </span>
-                        </div>
-                      )}
                     </div>
                   </ScrollReveal>
                 </div>
