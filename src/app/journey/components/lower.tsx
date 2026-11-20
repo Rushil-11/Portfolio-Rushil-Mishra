@@ -14,35 +14,35 @@ export default function Lower({ onSelectMilestone }: LowerProps) {
     side: "left" | "right";
     isIncoming?: boolean;
   })[] = [
-    {
-      id: "04",
-      title: "Codechef 2 Star",
-      side: "right",
-      text: "Conquered my first major competitive programming milestone. A validation of algorithmic discipline, contest composure, and consistent problem-solving progress.",
-      detailedText:
-        "After 10+ contests and a constant pace in CP, witnessing my peers getting a green tag on their profiles, making their first LinkedIn Post was giving a sense of FOMO. But still, with consistent efforts, many hidden test cases failure, I got to hit the bar for getting into Div-3 on Codechef. This was the first breakthrough which made the coming journey of DSA feel like an easy piece.",
-      isIncoming: false,
-      image: img5,
-    },
-    {
-      id: "05",
-      title: "Smart India Hackathon (SIH)",
-      side: "left",
-      text: "Competed in the internal hackathon, architecting scalable solutions and navigating problem breakdowns to tackle large-scale practical constraints.",
-      detailedText:
-        "Internal hackathon competition architecting scalable systems and tackling constraint-heavy real-world problem statements.",
-      isIncoming: false,
-      image: img4,
-    },
-    {
-      id: "06",
-      title: "[06 // Incoming]",
-      side: "right",
-      text: "More exciting milestones are coming...",
-      isIncoming: true,
-      image: null,
-    },
-  ];
+      {
+        id: "04",
+        title: "Codechef 2 Star",
+        side: "right",
+        text: "Conquered my first major competitive programming milestone. A validation of algorithmic discipline, contest composure, and consistent problem-solving progress.",
+        detailedText:
+          "After 10+ contests and a constant pace in CP, witnessing my peers getting a green tag on their profiles, making their first LinkedIn Post was giving a sense of FOMO. But still, with consistent efforts, many hidden test cases failure, I got to hit the bar for getting into Div-3 on Codechef. This was the first breakthrough which made the coming journey of DSA feel like an easy piece.",
+        isIncoming: false,
+        image: img5,
+      },
+      {
+        id: "05",
+        title: "Smart India Hackathon (SIH)",
+        side: "left",
+        text: "Competed in the internal hackathon, architecting scalable solutions and navigating problem breakdowns to tackle large-scale practical constraints.",
+        detailedText:
+          "Internal hackathon competition architecting scalable systems and tackling constraint-heavy real-world problem statements.",
+        isIncoming: false,
+        image: img4,
+      },
+      {
+        id: "06",
+        title: "[06 // Incoming]",
+        side: "right",
+        text: "More exciting milestones are coming...",
+        isIncoming: true,
+        image: null,
+      },
+    ];
 
   return (
     <section className="relative w-full min-h-screen bg-black text-white py-20 md:py-28 px-4 sm:px-6 md:px-12 flex flex-col justify-center overflow-hidden">
