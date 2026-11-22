@@ -36,7 +36,7 @@ export default function Lower({ onSelectMilestone }: LowerProps) {
       },
       {
         id: "06",
-        title: "[06 // Incoming]",
+        title: "Next...",
         side: "right",
         text: "More exciting milestones are coming...",
         isIncoming: true,

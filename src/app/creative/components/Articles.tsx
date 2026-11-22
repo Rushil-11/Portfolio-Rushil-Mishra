@@ -151,17 +151,17 @@ export default function Articles() {
       {/* 2. Side-by-Side Sliding Stage with Rise-Up Scroll Reveal */}
       <ScrollReveal delay={150} className="w-full flex justify-center">
         <div
-          className="relative w-full max-w-6xl flex items-center justify-center my-6 overflow-hidden md:overflow-visible"
+          className="relative w-full max-w-6xl flex items-center justify-center my-6 overflow-hidden md:overflow-visible touch-pan-y"
           onTouchStart={handleTouchStart}
           onTouchEnd={handleTouchEnd}
         >
-          {/* Left Arrow Button */}
+          {/* Left Arrow Button (Desktop only; on mobile & tab view, swipe with fingers) */}
           <button
             type="button"
             onClick={handlePrev}
             aria-label="Previous article"
             disabled={isAnimating}
-            className="absolute left-2 md:left-6 z-40 p-3 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors cursor-pointer shadow-lg backdrop-blur-sm disabled:opacity-50"
+            className="hidden lg:flex absolute left-6 z-40 p-3 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors cursor-pointer shadow-lg backdrop-blur-sm disabled:opacity-50 items-center justify-center"
           >
             <svg
               width="24"
@@ -245,7 +245,7 @@ export default function Articles() {
                       rel="noopener noreferrer"
                       className={`flex-shrink-0 flex flex-col justify-between w-[85vw] sm:w-[420px] md:w-[492px] h-[269px] rounded-[40px] border transition-all duration-500 ease-out ${
                         isCenter
-                          ? "bg-white text-black border-transparent shadow-[0_12px_45px_rgba(255,255,255,0.18)] scale-100 opacity-100 z-20 cursor-pointer p-8 hover:shadow-[0_16px_50px_rgba(255,255,255,0.28)]"
+                          ? "bg-white text-black border-transparent scale-100 opacity-100 z-20 cursor-pointer p-8"
                           : "bg-[#1f1f1f] text-white border-white/10 scale-[0.84] opacity-50 hover:opacity-75 z-10 cursor-pointer p-6"
                       }`}
                     >
@@ -267,7 +267,7 @@ export default function Articles() {
                     !isVisible
                       ? "opacity-0 scale-75 pointer-events-none border-transparent p-6"
                       : isCenter
-                      ? "bg-white text-black border-transparent shadow-[0_12px_45px_rgba(255,255,255,0.18)] scale-100 opacity-100 z-20 cursor-pointer p-8"
+                      ? "bg-white text-black border-transparent scale-100 opacity-100 z-20 cursor-pointer p-8"
                       : "bg-[#1f1f1f] text-white border-white/10 scale-[0.84] opacity-50 hover:opacity-75 z-10 cursor-pointer p-6"
                   }`}
                 >
@@ -277,13 +277,13 @@ export default function Articles() {
             })}
           </div>
 
-          {/* Right Arrow Button */}
+          {/* Right Arrow Button (Desktop only; on mobile & tab view, swipe with fingers) */}
           <button
             type="button"
             onClick={handleNext}
             aria-label="Next article"
             disabled={isAnimating}
-            className="absolute right-2 md:right-6 z-40 p-3 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors cursor-pointer shadow-lg backdrop-blur-sm disabled:opacity-50"
+            className="hidden lg:flex absolute right-6 z-40 p-3 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors cursor-pointer shadow-lg backdrop-blur-sm disabled:opacity-50 items-center justify-center"
           >
             <svg
               width="24"

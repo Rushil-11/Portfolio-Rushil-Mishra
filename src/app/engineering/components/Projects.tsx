@@ -26,7 +26,7 @@ export default function Projects() {
   ];
 
   return (
-    <section className="w-full bg-black py-24 px-6 lg:px-16 flex flex-col items-center">
+    <section className="w-full bg-black py-8 px-6 lg:px-16 flex flex-col items-center">
       {/* Section Title with Rise-Up Reveal */}
       <ScrollReveal delay={0} className="w-full flex justify-center">
         <h2 className="text-5xl md:text-7xl lg:text-8xl font-bold text-white text-center tracking-tight mb-16">
@@ -45,7 +45,7 @@ export default function Projects() {
               className="block h-full bg-black border border-[#fdfcfc] rounded-[40px] p-8 shadow-[10px_10px_25px_10px_rgba(99,99,99,0.25)] flex flex-col justify-between min-h-[280px] hover:border-white transition-all duration-200 hover:-translate-y-1 group cursor-pointer"
             >
               <div>
-                <h3 className="text-3xl md:text-4xl font-bold text-white mb-4">
+                <h3 className="text-2xl md:text-4xl font-bold text-white mb-4">
                   {proj.title}
                 </h3>
                 <p className="text-zinc-400 text-base leading-relaxed">
